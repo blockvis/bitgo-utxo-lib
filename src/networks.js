@@ -276,6 +276,10 @@ const networks = {
   },
 };
 
-Object.keys(networks).forEach(networkId => networks[networkId].isTestnet = networkId.includes('Test'));
+Object.keys(networks).forEach(networkId => {
+  networks[networkId].isTestnet = networkId.includes('Test') 
+    || networkId.includes('Testnet') 
+    || networkId === 'testnet';
+});
 
 module.exports = networks;
