@@ -2,7 +2,7 @@
 // Dogecoin BIP32 is a proposed standard: https://bitcointalk.org/index.php?topic=409731
 var coins = require('./coins')
 
-module.exports = {
+const networks = {
   dash: {
     messagePrefix: '\x19DarkCoin Signed Message:\n',
     bip32: {
@@ -173,5 +173,109 @@ module.exports = {
     scriptHash: 0xc4,
     wif: 0xef,
     coin: coins.BTC
-  }
-}
+  },
+  dogecoin: {
+    messagePrefix: '\x18Dogecoin Signed Message:\n',
+    bip32: {
+      public: 0x02facafd,
+      private: 0x02fac398
+    },
+    pubKeyHash: 0x1e,
+    scriptHash: 0x16,
+    wif: 0x9e,
+    dustThreshold: 0,
+    coin: coins.DOGECOIN,
+  },
+  hOdlcoin: {
+    messagePrefix: '\x18H0dlcoin Signed Message:\n',
+    bip32: {
+      public: 0x0488B21E,
+      private: 0x0488ADE4
+    },
+    pubKeyHash: 0x28,
+    scriptHash: 0x05,
+    wif: 0xa8,
+    coin: coins.HODLCOIN
+  },
+  bitcoingoldTestnet: {
+    messagePrefix: '\x18BitcoinGold Testnet Signed Message:\n',
+    bip32: {
+      public: 0x043587CF,
+      private: 0x04358394
+    },
+    pubKeyHash: 0x6F,
+    scriptHash: 0xC4,
+    wif: 0xEF,
+    coin: coins.BTG,
+  },
+  emercoin: {
+    messagePrefix: '\x18Emercoin Signed Message:\n',
+    bip32: {
+      public: 0x0488B21E,
+      private: 0x0488ADE4
+    },
+    pubKeyHash: 0x21,
+    scriptHash: 0x5C,
+    wif: 0x80,
+    coin: coins.EMERCOIN,
+  },
+  emercoinTestnet: {
+    messagePrefix: '\x18Emercoin Testnet Signed Message:\n',
+    bip32: {
+      public: 0x043587CF,
+      private: 0x04358394
+    },
+    pubKeyHash: 0x6F,
+    scriptHash: 0xC4,
+    wif: 0xEF,
+    coin: coins.EMERCOIN,
+  },
+  viacoin: {
+    messagePrefix: '\x18Viacoin Signed Message:\n',
+    bip32: {
+      public: 0x0488B21E,
+      private: 0x0488ADE4
+    },
+    pubKeyHash: 0x47,
+    scriptHash: 0x21,
+    wif: 0xC7,
+    coin: coins.VIACOIN,
+  },
+  viacoinTestnet: {
+    messagePrefix: '\x18Viacoin Testnet Signed Message:\n',
+    bip32: {
+      public: 0x043587CF,
+      private: 0x04358394
+    },
+    pubKeyHash: 0x7F,
+    scriptHash: 0xC4,
+    wif: 0xFF,
+    coin: coins.VIACOIN,
+  },
+  namecoin: {
+    messagePrefix: '\x18Namecoin Signed Message:\n',
+    bip32: {
+      public: 0x0488B21E,
+      private: 0x0488ADE4
+    },
+    pubKeyHash: 0x34,
+    scriptHash: 0xD,
+    wif: 0xB4,
+    coin: coins.NAMECOIN,
+  },
+  namecoinTestnet: {
+    messagePrefix: '\x18Namecoin Testnet Signed Message:\n',
+    bip32: {
+      public: 0x043587CF,
+      private: 0x04358394
+    },
+    pubKeyHash: 0x6F,
+    scriptHash: 0xC4,
+    wif: 0xEF,
+    coin: coins.NAMECOIN,
+  },
+};
+
+Object.keys(networks).forEach(networkId => networks[networkId].isTestnet = networkId.includes('Test'));
+
+module.exports = networks;
