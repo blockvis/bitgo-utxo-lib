@@ -142,12 +142,12 @@ const networks = {
     messagePrefix: '\x19Litecoin Signed Message:\n',
     bech32: 'tltc',
     bip32: {
-      public: 0x0488b21e,
-      private: 0x0488ade4
+      public: 0x043587CF,
+      private: 0x04358394
     },
-    pubKeyHash: 0x6f,
+    pubKeyHash: 0x6F,
     scriptHash: 0x3a,
-    wif: 0xb0,
+    wif: 0xef,
     coin: coins.LTC
   },
   bitcoin: {
