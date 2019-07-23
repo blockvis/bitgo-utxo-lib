@@ -274,6 +274,28 @@ const networks = {
     wif: 0xEF,
     coin: coins.NAMECOIN,
   },
+  digibyte: {
+    messagePrefix: '\x18Digibyte Signed Message:\n',
+    bip32: {
+      public: 0x0488B21E,
+      private: 0x0488ADE4
+    },
+    pubKeyHash: 0x1E,
+    scriptHash: 0x3F,
+    wif: 0x80,
+    coin: coins.DIGIBYTE,
+  },
+  digibyteTestnet: {
+    messagePrefix: '\x18Digibyte Testnet Signed Message:\n',
+    bip32: {
+      public: 0x043587CF,
+      private: 0x04358394
+    },
+    pubKeyHash: 0x7E,
+    scriptHash: 0x8C,
+    wif: 0xFE,
+    coin: coins.DIGIBYTE,
+  }
 };
 
 Object.keys(networks).forEach(networkId => {
