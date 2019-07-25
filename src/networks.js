@@ -295,6 +295,28 @@ const networks = {
     scriptHash: 0x8C,
     wif: 0xFE,
     coin: coins.DIGIBYTE,
+  },
+  komodo: {
+    messagePrefix: '\x18Komodo Signed Message:\n',
+    bip32: {
+      public: 0x0488B21E,
+      private: 0x0488ADE4
+    },
+    pubKeyHash: 0x3C,
+    scriptHash: 0x55,
+    wif: 0xBC,
+    coin: coins.KOMODO,
+  },
+  komodoTestnet: {
+    messagePrefix: '\x18Komodo Testnet Signed Message:\n',
+    bip32: {
+      public: 0x043587CF,
+      private: 0x04358394
+    },
+    pubKeyHash: 0x0,
+    scriptHash: 0x5,
+    wif: 0x80,
+    coin: coins.KOMODO,
   }
 };
 

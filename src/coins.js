@@ -15,6 +15,7 @@ const coins = {
   EMERCOIN: 'emercoin',
   NAMECOIN: 'namecoin',
   DIGIBYTE: 'digibyte',
+  KOMODO: 'komodo',
 }
 
 coins.isBitcoin = function (network) {
@@ -69,6 +70,10 @@ coins.isDigibyte = function(network) {
   return typeforce.value(coins.DIGIBYTE)(network.coin);
 }
 
+coins.isKomodo = function(network) {
+  return typeforce.value(coins.KOMODO)(network.coin);
+}
+
 coins.isValidCoin = typeforce.oneOf(
   coins.isBitcoin,
   coins.isBitcoinCash,
@@ -82,6 +87,7 @@ coins.isValidCoin = typeforce.oneOf(
   coins.isViacoin,
   coins.isNamecoin,
   coins.isDigibyte,
+  coins.isKomodo
 )
 
 module.exports = coins
