@@ -186,6 +186,18 @@ const networks = {
     dustThreshold: 0,
     coin: coins.DOGECOIN,
   },
+  dogecoinTest: {
+    messagePrefix: '\x18Dogecoin Testnet Signed Message:\n',
+    bip32: {
+      public: 0x02facafd,
+      private: 0x02fac398
+    },
+    pubKeyHash: 0x71,
+    scriptHash: 0xc4,
+    wif: 0xf1,
+    dustThreshold: 0,
+    coin: coins.DOGECOIN,
+  },
   hOdlcoin: {
     messagePrefix: '\x18H0dlcoin Signed Message:\n',
     bip32: {
