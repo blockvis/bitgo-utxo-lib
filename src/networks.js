@@ -264,6 +264,17 @@ const networks = {
     wif: 0xFF,
     coin: coins.VIACOIN,
   },
+  viacoinRegtest: {
+    messagePrefix: '\x18Viacoin Testnet Signed Message:\n',
+    bip32: {
+      public: 0x043587CF,
+      private: 0x04358394
+    },
+    pubKeyHash: 0x6F,
+    scriptHash: 0xC4,
+    wif: 0xEF,
+    coin: coins.VIACOIN,
+  },
   namecoin: {
     messagePrefix: '\x18Namecoin Signed Message:\n',
     bip32: {
