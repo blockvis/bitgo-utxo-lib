@@ -340,6 +340,39 @@ const networks = {
     scriptHash: 0x5,
     wif: 0x80,
     coin: coins.KOMODO,
+  },
+  einsteinium: {
+    messagePrefix: '\x18Einsteinium Signed Message:\n',
+    bip32: {
+      public: 0x0488B21E,
+      private: 0x0488ADE4
+    },
+    pubKeyHash: 0x33,
+    scriptHash: 0x5,
+    wif: 0x176,
+    coin: coins.EINSTEINIUM,
+  },
+  decred: {
+    messagePrefix: '\x18Decred Signed Message:\n',
+    bip32: {
+      public: 0x02fda926,
+      private: 0x02fda4e8
+    },
+    pubKeyHash: 0x073f,
+    scriptHash: 0x071a,
+    wif: 0x22de,
+    coin: coins.DECRED,
+  },
+  decredTestnet: {
+    messagePrefix: '\x18Decred Testnet Signed Message:\n',
+    bip32: {
+      public: 0x04358397,
+      private: 0x043587d1
+    },
+    pubKeyHash: 0x0f21,
+    scriptHash: 0x0efc,
+    wif: 0x230e,
+    coin: coins.DECRED,
   }
 };
 

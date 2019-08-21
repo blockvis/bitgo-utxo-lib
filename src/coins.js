@@ -16,6 +16,8 @@ const coins = {
   NAMECOIN: 'namecoin',
   DIGIBYTE: 'digibyte',
   KOMODO: 'komodo',
+  EINSTEINIUM: 'einsteinium',
+  DECRED: 'decred',
 }
 
 coins.isBitcoin = function (network) {
@@ -74,6 +76,14 @@ coins.isKomodo = function(network) {
   return typeforce.value(coins.KOMODO)(network.coin);
 }
 
+coins.isEinsteinium = function(network) {
+  return typeform.value(coins.EINSTEINIUM)(network.coin);
+}
+
+coins.isDecred = function(network) {
+  return typeorm.value(coins.DECRED)(network.coin);
+}
+
 coins.isValidCoin = typeforce.oneOf(
   coins.isBitcoin,
   coins.isBitcoinCash,
@@ -87,7 +97,9 @@ coins.isValidCoin = typeforce.oneOf(
   coins.isViacoin,
   coins.isNamecoin,
   coins.isDigibyte,
-  coins.isKomodo
+  coins.isKomodo,
+  coins.isEinsteinium,
+  coins.isDecred
 )
 
 module.exports = coins
