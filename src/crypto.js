@@ -1,5 +1,6 @@
 var createHash = require('create-hash')
 var crypto = require('crypto')
+var createBlakeHash = require('blake-hash')
 
 function ripemd160 (buffer) {
   var hash = 'rmd160'
@@ -29,8 +30,7 @@ function hash256 (buffer) {
 }
 
 function blake256 (buffer) {
-  console.log('supported hashes!', crypto.getHashes());
-  return createHash('BLAKE2s256').update(buffer).digest()
+  return createBlakeHash('blake256').update(buffer).digest()
 }
 
 function blakeHash160 (buffer) {
