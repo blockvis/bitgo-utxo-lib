@@ -29,6 +29,7 @@ function hash256 (buffer) {
 }
 
 function blake256 (buffer) {
+  console.log('supported hashes!', crypto.getHashes());
   return createHash('BLAKE2s256').update(buffer).digest()
 }
 
