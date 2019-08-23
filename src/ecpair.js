@@ -134,11 +134,11 @@ ECPair.prototype.getAddress = function () {
   if (coins.isDecred(this.getNetwork())) {
     const ripemd160Preimage = bcrypto.blakeHash160(this.getPublicKeyBuffer())
     const checksumPreimage = `${this.getNetwork().pubKeyHash}${ripemd160Preimage}`
-    const checksum = bcrypto.blakeHash256(Buffer.from(checksumPreimage)).toString('hex')
+    const checksum = bcrypto.blakeHash256(Buffer.from(checksumPreimage, 'hex')).toString('hex')
     const checksumPart = checksum.substring(checksum.length - 8, checksum.length);
     const base58Preimage = `${this.getNetwork().pubKeyHash}${this.getPublicKeyBuffer().toString('hex')}${checksumPart}`
 
-    return baddress.toBase58Check(base58Preimage, this.getNetwork().pubKeyHash)
+    return baddress.toBase58Check(Buffer.from(base58Preimage, 'hex'), this.getNetwork().pubKeyHash)
   }
 
   return baddress.toBase58Check(bcrypto.hash160(this.getPublicKeyBuffer()), this.getNetwork().pubKeyHash)
