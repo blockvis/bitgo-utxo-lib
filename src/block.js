@@ -118,6 +118,9 @@ Block.fromHex = function (hex, network) {
 }
 
 Block.prototype.getHash = function () {
+  if (coins.isDecred(this.network)) {
+    return bcrypto.blakeHash256(this.toBuffer(true))
+  }
   return bcrypto.hash256(this.toBuffer(true))
 }
 
@@ -214,6 +217,9 @@ Block.calculateMerkleRoot = function (transactions) {
     return transaction.getHash()
   })
 
+  if (coins.isDecred(this.network)) {
+    return fastMerkleRoot(hashes, bcrypto.blakeHash256)
+  }
   return fastMerkleRoot(hashes, bcrypto.hash256)
 }
 
