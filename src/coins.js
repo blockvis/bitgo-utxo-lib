@@ -77,11 +77,11 @@ coins.isKomodo = function(network) {
 }
 
 coins.isEinsteinium = function(network) {
-  return typeform.value(coins.EINSTEINIUM)(network.coin);
+  return typeforce.value(coins.EINSTEINIUM)(network.coin);
 }
 
 coins.isDecred = function(network) {
-  return typeorm.value(coins.DECRED)(network.coin);
+  return typeforce.value(coins.DECRED)(network.coin);
 }
 
 coins.isValidCoin = typeforce.oneOf(
