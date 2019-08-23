@@ -135,6 +135,8 @@ ECPair.prototype.getAddress = function () {
     const ripemd160Preimage = bcrypto.blakeHash160(this.getPublicKeyBuffer())
     const checksumPreimage = `${this.getNetwork().pubKeyHash}${ripemd160Preimage}`
     const checksum = bcrypto.blakeHash256(Buffer.from(checksumPreimage))
+    console.log('checksum', checksum);
+    console.log('checksum hex', checksum.toString('hex'))
     const checksumPart = checksum.substring(checksum.length - 8, checksum.length);
     const base58Preimage = `${this.getNetwork().pubKeyHash}${this.getPublicKeyBuffer().toString('hex')}${checksumPart}`
 
