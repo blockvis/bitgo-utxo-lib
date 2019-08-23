@@ -28,10 +28,25 @@ function hash256 (buffer) {
   return sha256(sha256(buffer))
 }
 
+function blake256 (buffer) {
+  return createHash('BLAKE2s256').update(buffer).digest()
+}
+
+function blakeHash160 (buffer) {
+  return ripemd160(blake256(buffer));
+}
+
+function blakeHash256 (buffer) {
+  return blake256(blake256(buffer));
+}
+
 module.exports = {
   hash160: hash160,
   hash256: hash256,
   ripemd160: ripemd160,
   sha1: sha1,
-  sha256: sha256
+  sha256: sha256,
+  blake256,
+  blakeHash256,
+  blakeHash160
 }

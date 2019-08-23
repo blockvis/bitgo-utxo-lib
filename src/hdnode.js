@@ -13,6 +13,7 @@ var ecurve = require('ecurve')
 var curve = ecurve.getCurveByName('secp256k1')
 
 var fastcurve = require('./fastcurve')
+var coins = require('./coins')
 
 function HDNode (keyPair, chainCode) {
   typeforce(types.tuple('ECPair', types.Buffer256bit), arguments)
@@ -131,6 +132,9 @@ HDNode.prototype.getAddress = function () {
 }
 
 HDNode.prototype.getIdentifier = function () {
+  if (coins.isDecred(this.getNetwork())) {
+    return bcrypto.blakeHash160(this.keyPair.getPublicKeyBuffer())
+  }
   return bcrypto.hash160(this.keyPair.getPublicKeyBuffer())
 }
 

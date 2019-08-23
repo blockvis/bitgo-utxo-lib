@@ -15,6 +15,8 @@ var secp256k1 = ecdsa.__curve
 
 var fastcurve = require('./fastcurve')
 
+var coins = require('./coins')
+
 function ECPair (d, Q, options) {
   if (options) {
     typeforce({
@@ -129,6 +131,10 @@ ECPair.makeRandom = function (options) {
 }
 
 ECPair.prototype.getAddress = function () {
+  if (coins.isDecred(this.getNetwork())) {
+    return baddress.toBase58Check(bcrypto.blakeHash160(this.getPublicKeyBuffer()), this.getNetwork().pubKeyHash)
+  }
+  
   return baddress.toBase58Check(bcrypto.hash160(this.getPublicKeyBuffer()), this.getNetwork().pubKeyHash)
 }
 
