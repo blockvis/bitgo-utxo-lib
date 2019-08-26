@@ -132,13 +132,14 @@ ECPair.makeRandom = function (options) {
 
 ECPair.prototype.getAddress = function () {
   if (coins.isDecred(this.getNetwork())) {
-    const pubKeyHash = bcrypto.blakeHash160(this.getPublicKeyBuffer())
-    const checksumPreimage = `${this.getNetwork().pubKeyHash}${pubKeyHash}`
-    const checksum = bcrypto.blakeHash256(Buffer.from(checksumPreimage, 'hex')).toString('hex')
-    const checksumPart = checksum.substring(checksum.length - 8, checksum.length);
-    const base58Preimage = `${this.getNetwork().pubKeyHash}${this.getPublicKeyBuffer().toString('hex')}${checksumPart}`
+    const pubKeyBuffer = this.getPublicKeyBuffer();
+    const prefix = this.getNetwork().pubKeyHash.toString('16').padStart(4, '0');
+    const pubKeyHash = bcrypto.blakeHash160(pubKeyBuffer).toString('hex')
+    const checksumPreimageBuffer = Buffer.from(`${prefix}${pubKeyHash}`, 'hex')
+    const checksum = bcrypto.blakeHash256(Buffer.from(checksumPreimageBuffer, 'hex')).toString('hex').slice(0, 8);
+    const base58PreimageBuffer = Buffer.from(`${prefix}${pubKeyBuffer.toString('hex')}${checksum}`, 'hex');
 
-    return baddress.toBase58Check(Buffer.from(base58Preimage, 'hex'), this.getNetwork().pubKeyHash)
+    return baddress.toBase58Check(base58PreimageBuffer, prefix)
   }
 
   return baddress.toBase58Check(bcrypto.hash160(this.getPublicKeyBuffer()), this.getNetwork().pubKeyHash)
