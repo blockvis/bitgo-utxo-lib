@@ -7,6 +7,8 @@ var networks = require('./networks')
 var typeforce = require('typeforce')
 var types = require('./types')
 var base58 = require('bs58');
+var coins = require('./coins');
+var base58 = require('bs58');
 
 function fromBase58Check (address) {
   var payload = bs58check.decode(address)
@@ -76,9 +78,39 @@ function fromOutputScript (outputScript, network) {
 function toOutputScript (address, network) {
   network = network || networks.bitcoin
 
+  if (coins.isDecred(network)) {
+    return toOutputScriptDecred(address, network)
+  }
+
   var decode
   try {
     decode = fromBase58Check(address)
+  } catch (e) {}
+
+  if (decode) {
+    if (decode.version === network.pubKeyHash) return btemplates.pubKeyHash.output.encode(decode.hash)
+    if (decode.version === network.scriptHash) return btemplates.scriptHash.output.encode(decode.hash)
+  } else {
+    try {
+      decode = fromBech32(address)
+    } catch (e) {}
+
+    if (decode) {
+      if (decode.prefix !== network.bech32) throw new Error(address + ' has an invalid prefix')
+      if (decode.version === 0) {
+        if (decode.data.length === 20) return btemplates.witnessPubKeyHash.output.encode(decode.data)
+        if (decode.data.length === 32) return btemplates.witnessScriptHash.output.encode(decode.data)
+      }
+    }
+  }
+
+  throw new Error(address + ' has no matching Script')
+}
+
+function toOutputScriptDecred(address, network) {
+  var decode
+  try {
+    decode = base58.decode(address)
   } catch (e) {}
 
   if (decode) {
