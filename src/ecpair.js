@@ -133,7 +133,7 @@ ECPair.makeRandom = function (options) {
 ECPair.prototype.getAddress = function () {
   if (coins.isDecred(this.getNetwork())) {
     const pubKeyBuffer = this.getPublicKeyBuffer();
-    const prefix = this.getNetwork().pubKeyHash.toString('16').padStart(4, '0');
+    const prefix = this.getNetwork().pubKeyHash.toString(16).padStart(4, '0');
     const pubKeyHash = bcrypto.blakeHash160(pubKeyBuffer).toString('hex')
     const checksumPreimageBuffer = Buffer.from(`${prefix}${pubKeyHash}`, 'hex')
     const checksum = bcrypto.blakeHash256(Buffer.from(checksumPreimageBuffer, 'hex')).toString('hex').slice(0, 8);
