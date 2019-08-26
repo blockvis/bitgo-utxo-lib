@@ -6,6 +6,7 @@ var btemplates = require('./templates')
 var networks = require('./networks')
 var typeforce = require('typeforce')
 var types = require('./types')
+var base58 = require('bs58');
 
 function fromBase58Check (address) {
   var payload = bs58check.decode(address)
@@ -48,6 +49,10 @@ function toBase58Check (hash, version) {
   hash.copy(payload, offset)
 
   return bs58check.encode(payload)
+}
+
+function decredToBase58(hash) {
+  return base58.encode(hash);
 }
 
 function toBech32 (data, version, prefix) {
@@ -102,5 +107,6 @@ module.exports = {
   fromOutputScript: fromOutputScript,
   toBase58Check: toBase58Check,
   toBech32: toBech32,
-  toOutputScript: toOutputScript
+  toOutputScript: toOutputScript,
+  decredToBase58
 }

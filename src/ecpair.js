@@ -139,7 +139,7 @@ ECPair.prototype.getAddress = function () {
     const checksum = bcrypto.blakeHash256(Buffer.from(checksumPreimageBuffer, 'hex')).toString('hex').slice(0, 8);
     const base58PreimageBuffer = Buffer.from(`${prefix}${pubKeyBuffer.toString('hex')}${checksum}`, 'hex');
 
-    return baddress.toBase58Check(base58PreimageBuffer, prefix)
+    return baddress.decredToBase58(base58PreimageBuffer)
   }
 
   return baddress.toBase58Check(bcrypto.hash160(this.getPublicKeyBuffer()), this.getNetwork().pubKeyHash)
