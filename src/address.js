@@ -6,9 +6,10 @@ var btemplates = require('./templates')
 var networks = require('./networks')
 var typeforce = require('typeforce')
 var types = require('./types')
-var base58 = require('bs58');
-var coins = require('./coins');
-var base58 = require('bs58');
+var base58 = require('bs58')
+var coins = require('./coins')
+var base58 = require('bs58')
+var bcrypto = require('./crypto')
 
 function fromBase58Check (address) {
   var payload = bs58check.decode(address)
@@ -26,20 +27,23 @@ function fromBase58Check (address) {
   return { version: version, hash: hash }
 }
 
-function decredFromBase58Check (address) {
-  var payload = base58.decode(address).slice(2, 20)
+function decredFromBase58Check (address, network) {
+  var payload = base58.decode(address)
 
   // TODO: 4.0.0, move to "toOutputScript"
-  // if (payload.length < 21) throw new TypeError(address + ' is too short')
-  // if (payload.length > 22) throw new TypeError(address + ' is too long')
+  if (payload.length === 26) throw new TypeError(address + ' is not valid')
 
-  // var multibyte = payload.length === 22
-  // var offset = multibyte ? 2 : 1
+  var payloadWithoutChecksum = payload.slice(0, 22)
+  var version = payloadWithoutChecksum.readUInt16BE(0)
+  var pubKeyHash = payloadWithoutChecksum.slice(2)
 
-  var version = payload[0]
-  var hash = payload.slice(1)
+  var checksum = payload.slice(22)
+  var calculatedChecksum = bcrypto.blakeHash256(Buffer.from(`${network.pubKeyHash}${pubKeyHash}`, 'hex'))
 
-  return { version: version, hash: hash }
+  if (checksum.toString('hex') !== calculatedChecksum.toString('hex')) 
+    throw new TypeError(addess + ' Decred checksum is not valid')
+
+  return { version: version, hash: pubKeyHash }
 }
 
 function fromBech32 (address) {
@@ -97,7 +101,7 @@ function toOutputScript (address, network) {
   var decode
   try {
     if (coins.isDecred(network)) {
-      decode = decredFromBase58Check(address)
+      decode = decredFromBase58Check(address, network)
     } else {
       decode = fromBase58Check(address)
     }
