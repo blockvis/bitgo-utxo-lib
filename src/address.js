@@ -27,17 +27,17 @@ function fromBase58Check (address) {
 }
 
 function decredFromBase58Check (address) {
-  var payload = base58.decode(address)
+  var payload = base58.decode(address).slice(2, 20)
 
   // TODO: 4.0.0, move to "toOutputScript"
-  if (payload.length < 21) throw new TypeError(address + ' is too short')
-  if (payload.length > 22) throw new TypeError(address + ' is too long')
+  // if (payload.length < 21) throw new TypeError(address + ' is too short')
+  // if (payload.length > 22) throw new TypeError(address + ' is too long')
 
-  var multibyte = payload.length === 22
-  var offset = multibyte ? 2 : 1
+  // var multibyte = payload.length === 22
+  // var offset = multibyte ? 2 : 1
 
-  var version = multibyte ? payload.readUInt16BE(0) : payload[0]
-  var hash = payload.slice(offset)
+  var version = payload[0]
+  var hash = payload.slice(1)
 
   return { version: version, hash: hash }
 }
