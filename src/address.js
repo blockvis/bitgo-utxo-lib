@@ -39,7 +39,7 @@ function decredFromBase58Check (address, network) {
 
   var checksum = payload.slice(22)
   var checksumPreimage = Buffer.from(`${network.pubKeyHash.toString(16).padStart(4, '0')}${pubKeyHash.toString('hex')}`, 'hex')
-  var calculatedChecksum = bcrypto.blakeHash256(checksumPreimage)
+  var calculatedChecksum = bcrypto.blakeHash256(checksumPreimage).slice(0, 4)
 
   if (checksum.toString('hex') !== calculatedChecksum.toString('hex')) 
     throw new TypeError(addess + ' checksum is not valid (Decred)')
