@@ -26,6 +26,22 @@ function fromBase58Check (address) {
   return { version: version, hash: hash }
 }
 
+function decredFromBase58Check (address) {
+  var payload = base58.decode(address)
+
+  // TODO: 4.0.0, move to "toOutputScript"
+  if (payload.length < 21) throw new TypeError(address + ' is too short')
+  if (payload.length > 22) throw new TypeError(address + ' is too long')
+
+  var multibyte = payload.length === 22
+  var offset = multibyte ? 2 : 1
+
+  var version = multibyte ? payload.readUInt16BE(0) : payload[0]
+  var hash = payload.slice(offset)
+
+  return { version: version, hash: hash }
+}
+
 function fromBech32 (address) {
   var result = bech32.decode(address)
   var data = bech32.fromWords(result.words.slice(1))
@@ -78,39 +94,13 @@ function fromOutputScript (outputScript, network) {
 function toOutputScript (address, network) {
   network = network || networks.bitcoin
 
-  if (coins.isDecred(network)) {
-    return toOutputScriptDecred(address, network)
-  }
-
   var decode
   try {
-    decode = fromBase58Check(address)
-  } catch (e) {}
-
-  if (decode) {
-    if (decode.version === network.pubKeyHash) return btemplates.pubKeyHash.output.encode(decode.hash)
-    if (decode.version === network.scriptHash) return btemplates.scriptHash.output.encode(decode.hash)
-  } else {
-    try {
-      decode = fromBech32(address)
-    } catch (e) {}
-
-    if (decode) {
-      if (decode.prefix !== network.bech32) throw new Error(address + ' has an invalid prefix')
-      if (decode.version === 0) {
-        if (decode.data.length === 20) return btemplates.witnessPubKeyHash.output.encode(decode.data)
-        if (decode.data.length === 32) return btemplates.witnessScriptHash.output.encode(decode.data)
-      }
+    if (coins.isDecred(network)) {
+      decode = decredFromBase58Check(address)
+    } else {
+      decode = fromBase58Check(address)
     }
-  }
-
-  throw new Error(address + ' has no matching Script')
-}
-
-function toOutputScriptDecred(address, network) {
-  var decode
-  try {
-    decode = base58.decode(address)
   } catch (e) {}
 
   if (decode) {
