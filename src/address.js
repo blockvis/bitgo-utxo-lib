@@ -31,17 +31,18 @@ function decredFromBase58Check (address, network) {
   var payload = base58.decode(address)
 
   // TODO: 4.0.0, move to "toOutputScript"
-  if (payload.length === 26) throw new TypeError(address + ' is not valid')
+  if (payload.length !== 26) throw new TypeError(address + ' is not valid (Decred)')
 
   var payloadWithoutChecksum = payload.slice(0, 22)
   var version = payloadWithoutChecksum.readUInt16BE(0)
   var pubKeyHash = payloadWithoutChecksum.slice(2)
 
   var checksum = payload.slice(22)
-  var calculatedChecksum = bcrypto.blakeHash256(Buffer.from(`${network.pubKeyHash}${pubKeyHash}`, 'hex'))
+  var checksumPreimage = Buffer.from(`${network.pubKeyHash}${pubKeyHash.toString('hex')}`, 'hex')
+  var calculatedChecksum = bcrypto.blakeHash256(checksumPreimage)
 
   if (checksum.toString('hex') !== calculatedChecksum.toString('hex')) 
-    throw new TypeError(addess + ' Decred checksum is not valid')
+    throw new TypeError(addess + ' checksum is not valid (Decred)')
 
   return { version: version, hash: pubKeyHash }
 }
