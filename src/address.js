@@ -38,7 +38,7 @@ function decredFromBase58Check (address, network) {
   var pubKeyHash = payloadWithoutChecksum.slice(2)
 
   var checksum = payload.slice(22)
-  var checksumPreimage = Buffer.from(`${network.pubKeyHash}${pubKeyHash.toString('hex')}`, 'hex')
+  var checksumPreimage = Buffer.from(`${network.pubKeyHash.toString(16).padStart(4, '0')}${pubKeyHash.toString('hex')}`, 'hex')
   var calculatedChecksum = bcrypto.blakeHash256(checksumPreimage)
 
   if (checksum.toString('hex') !== calculatedChecksum.toString('hex')) 
