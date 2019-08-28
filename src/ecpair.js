@@ -16,6 +16,7 @@ var secp256k1 = ecdsa.__curve
 var fastcurve = require('./fastcurve')
 
 var coins = require('./coins')
+var decdedJs = require('decredjs-lib')
 
 function ECPair (d, Q, options) {
   if (options) {
@@ -181,6 +182,11 @@ ECPair.prototype.sign = function (hash) {
 
 ECPair.prototype.toWIF = function () {
   if (!this.d) throw new Error('Missing private key')
+
+  if (coins.isDecred(this.getNetwork())) {
+    const pk = new decdedJs.PrivateKey(this.d.toBuffer(32), this.getNetwork().isTestnet ? 'testnet' : 'mainnet')
+    return pk.toWIF()
+  }
 
   return wif.encode(this.network.wif, this.d.toBuffer(32), this.compressed)
 }
