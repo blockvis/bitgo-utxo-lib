@@ -16,7 +16,7 @@ var secp256k1 = ecdsa.__curve
 var fastcurve = require('./fastcurve')
 
 var coins = require('./coins')
-var decdedJs = require('decredjs-lib')
+var base58Check = require('bs58check');
 
 function ECPair (d, Q, options) {
   if (options) {
@@ -184,8 +184,25 @@ ECPair.prototype.toWIF = function () {
   if (!this.d) throw new Error('Missing private key')
 
   if (coins.isDecred(this.getNetwork())) {
-    const pk = new decdedJs.PrivateKey(this.d.toBuffer(32), this.getNetwork().isTestnet ? 'dcrdtestnet' : 'dcrdlivenet');
-    return pk.toWIF()
+    // from Decredjs lib https://github.com/decredjs/decredjs-lib/blob/master-new/lib/privatekey.js#L307
+    var networkBuffer = new Buffer(2);
+    networkBuffer.writeUInt16LE(this.network.wif);
+
+    var buf;
+    if (this.compressed) {
+      buf = Buffer.concat([
+        networkBuffer,
+        this.d.toBuffer(32),
+        new Buffer([0x01])
+      ]);
+    } else {
+      buf = Buffer.concat([
+        networkBuffer,
+        this.d.toBuffer(32),
+      ]);
+    }
+
+    return base58Check.encode(buf);
   }
 
   return wif.encode(this.network.wif, this.d.toBuffer(32), this.compressed)
