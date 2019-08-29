@@ -16,7 +16,7 @@ var secp256k1 = ecdsa.__curve
 var fastcurve = require('./fastcurve')
 
 var coins = require('./coins')
-var base58Check = require('bs58check');
+var base58Check = require('decredjs-lib/lib/encoding/base58check');
 
 function ECPair (d, Q, options) {
   if (options) {
