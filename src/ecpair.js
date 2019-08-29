@@ -184,7 +184,7 @@ ECPair.prototype.toWIF = function () {
   if (!this.d) throw new Error('Missing private key')
 
   if (coins.isDecred(this.getNetwork())) {
-    const pk = new decdedJs.PrivateKey(this.d.toBuffer(32), this.getNetwork().isTestnet ? 'testnet' : 'mainnet')
+    const pk = new decdedJs.PrivateKey(this.d.toBuffer(32), this.getNetwork().isTestnet ? 'dcrdtestnet' : 'dcrdlivenet');
     return pk.toWIF()
   }
 
