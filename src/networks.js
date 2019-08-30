@@ -366,8 +366,8 @@ const networks = {
   decredTestnet: {
     messagePrefix: '\x18Decred Testnet Signed Message:\n',
     bip32: {
-      public: 0x04358397,
-      private: 0x043587d1
+      public: 0x043587d1,
+      private: 0x04358397
     },
     pubKeyHash: 0x0f21,
     scriptHash: 0x0efc,
