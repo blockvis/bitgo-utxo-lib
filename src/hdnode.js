@@ -217,6 +217,8 @@ HDNode.prototype.toBase58 = function (__isPrivate) {
   return base58check.encode(buffer)
 }
 
+HDNode.prototype.toBase58Decred = decredBase58Check;
+
 // https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki#child-key-derivation-ckd-functions
 HDNode.prototype.derive = function (index) {
   typeforce(types.UInt32, index)
