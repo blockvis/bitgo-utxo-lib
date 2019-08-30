@@ -14,6 +14,7 @@ var curve = ecurve.getCurveByName('secp256k1')
 
 var fastcurve = require('./fastcurve')
 var coins = require('./coins')
+var decredBase58Check = require('decredjs-lib/lib/encoding/base58check');
 
 function HDNode (keyPair, chainCode) {
   typeforce(types.tuple('ECPair', types.Buffer256bit), arguments)
@@ -57,14 +58,6 @@ HDNode.fromSeedHex = function (hex, network) {
 }
 
 HDNode.fromBase58 = function (string, networks) {
-  // FixMe: Issue #38, this method just pops the latest network object from the list instead of being more discerning.
-  var buffer = base58check.decode(string)
-  if (buffer.length !== 78) throw new Error('Invalid buffer length')
-
-  // 4 bytes: version bytes
-  var version = buffer.readUInt32BE(0)
-  var network
-
   // list of networks?
   if (Array.isArray(networks)) {
     network = networks.filter(function (x) {
@@ -78,6 +71,20 @@ HDNode.fromBase58 = function (string, networks) {
   } else {
     network = networks || NETWORKS.bitcoin
   }
+  
+  var b58Check = base58check;
+
+  if (coins.isDecred(network)) {
+    b58Check = decredBase58Check;
+  }
+
+  // FixMe: Issue #38, this method just pops the latest network object from the list instead of being more discerning.
+  var buffer = b58Check.decode(string)
+  if (buffer.length !== 78) throw new Error('Invalid buffer length')
+
+  // 4 bytes: version bytes
+  var version = buffer.readUInt32BE(0)
+  var network
 
   if (version !== network.bip32.private &&
     version !== network.bip32.public) throw new Error('Invalid network version')
